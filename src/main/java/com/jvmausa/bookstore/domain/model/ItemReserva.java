@@ -1,13 +1,12 @@
 package com.jvmausa.bookstore.domain.model;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,20 +14,24 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Livro {
-	
+public class ItemReserva {
+
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String nome;
-	private String autor;
-	private String editora;
-	private BigDecimal preco;
+	@ManyToOne
+	@JoinColumn(name = "id_reserva", nullable = false)
+	private Reserva reserva;
+
 	
-	
-	@Enumerated(EnumType.STRING)
-	private StatusLivro status = StatusLivro.DISPONÍVEL;
+	/*
+	 * fetch EAGER resolveu o problema de selects desnecessários
+	 * 
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_livro", nullable = false)
+	private Livro livro;
 
 }

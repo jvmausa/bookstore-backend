@@ -1,0 +1,1 @@
+alter table livro add column status varchar(15) not null;

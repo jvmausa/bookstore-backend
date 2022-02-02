@@ -9,12 +9,12 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class LivroModel extends RepresentationModel<LivroModel>{
+public class ItemReservaModel extends RepresentationModel<ItemReservaModel> {
 
-	private Long id;
+	private Long livroId;
 
-	private String nome;
-	private String autor;
-	private String editora;
-	private BigDecimal preco;
+	private String livroNome;
+
+	private BigDecimal precoLivro;
+
 }

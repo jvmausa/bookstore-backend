@@ -17,5 +17,8 @@ public class LivroInput {
 
 	@NotBlank
 	private String editora;
+	
+	@NotBlank
+	private String preco;
 
 }

@@ -49,7 +49,7 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -67,6 +67,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.yannbriancon/spring-hibernate-query-utils -->
+		<dependency>
+			<groupId>com.yannbriancon</groupId>
+			<artifactId>spring-hibernate-query-utils</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
