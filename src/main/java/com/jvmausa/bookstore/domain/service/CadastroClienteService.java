@@ -27,8 +27,4 @@ public class CadastroClienteService {
 
 	}
 
-	/*
-	 * TODO excluir
-	 */
-
 }

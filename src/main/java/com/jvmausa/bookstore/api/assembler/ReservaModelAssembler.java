@@ -29,4 +29,6 @@ public class ReservaModelAssembler extends RepresentationModelAssemblerSupport<R
 		return reservaModel;
 	}
 
+	
+	
 }

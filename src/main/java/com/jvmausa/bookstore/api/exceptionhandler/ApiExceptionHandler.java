@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.jvmausa.bookstore.domain.exception.DadosInvalidosException;
 import com.jvmausa.bookstore.domain.exception.EntidadeNaoEncontradaException;
+import com.jvmausa.bookstore.domain.exception.ReservaNaoEncontradaEmClienteException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -51,6 +52,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	}
 
+	@ExceptionHandler(ReservaNaoEncontradaEmClienteException.class)
+	public ResponseEntity<?> handleReservaClienteNaoEncontrada(ReservaNaoEncontradaEmClienteException ex, WebRequest request) {
+
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		ProblemType problemType = ProblemType.CLIENTE_NAO_POSSUI_RESERVA;
+		String detail = ex.getMessage();
+
+		Problem problem = createProblemBuilder(status, problemType, detail).userMessage(detail).build();
+
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}
+	
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
 	public ResponseEntity<?> handleEntidadeNaoEncontrada(EntidadeNaoEncontradaException ex, WebRequest request) {
 
@@ -62,6 +75,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
+	
+	
 
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,

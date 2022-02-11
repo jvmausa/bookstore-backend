@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jvmausa.bookstore.api.assembler.ClienteInputDisassembler;
 import com.jvmausa.bookstore.api.assembler.ClienteModelAssembler;
+import com.jvmausa.bookstore.api.assembler.ClienteResumoModelAssembler;
 import com.jvmausa.bookstore.api.model.ClienteModel;
+import com.jvmausa.bookstore.api.model.ClienteResumoModel;
 import com.jvmausa.bookstore.api.model.input.ClienteInput;
 import com.jvmausa.bookstore.domain.exception.DadosInvalidosException;
 import com.jvmausa.bookstore.domain.model.Cliente;
@@ -33,11 +35,14 @@ public class ClienteController {
 	private ClienteModelAssembler clienteModelAssembler;
 
 	@Autowired
+	private ClienteResumoModelAssembler clienteResumoModelAssembler;
+
+	@Autowired
 	private CadastroClienteService cadastroCliente;
 
 	@Autowired
 	private ClienteInputDisassembler clienteInputDisassembler;
-	
+
 	@GetMapping
 	public CollectionModel<ClienteModel> listar() {
 		return clienteModelAssembler.toCollectionModel(clienteRepository.findAll());
@@ -51,13 +56,13 @@ public class ClienteController {
 		return clienteModel;
 
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	ClienteModel adicionar(@RequestBody @Valid ClienteInput clienteInput) {
 
 		Cliente cliente = clienteInputDisassembler.toDomainObject(clienteInput);
-		
+
 		cliente = cadastroCliente.salvar(cliente);
 
 		try {
@@ -67,6 +72,17 @@ public class ClienteController {
 		} catch (RuntimeException e) {
 			throw new DadosInvalidosException(e.getMessage());
 		}
+	}
+
+	@GetMapping(path = "{id_cliente}/books")
+	ClienteResumoModel listagemLivrosEmprestados(@PathVariable Long id_cliente) {
+
+		Cliente cliente = cadastroCliente.buscarOuFalhar(id_cliente);
+
+		ClienteResumoModel clienteResumoModel = clienteResumoModelAssembler.toModel(cliente);
+
+		return clienteResumoModel;
+
 	}
 
 }

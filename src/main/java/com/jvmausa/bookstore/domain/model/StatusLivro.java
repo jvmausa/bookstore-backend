@@ -6,6 +6,6 @@ import lombok.Getter;
 public enum StatusLivro {
 
 	DISPONÍVEL,
-	INDISPONÍVEL;
+	EMPRESTADO;
 
 }

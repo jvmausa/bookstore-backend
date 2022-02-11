@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ClienteModel extends RepresentationModel<ClienteModel> {
+public class ClienteResumoModel extends RepresentationModel<ClienteResumoModel> {
 
 	private Long id;
-	private String nome;
 
 	private ReservaModel reserva;
+
 }

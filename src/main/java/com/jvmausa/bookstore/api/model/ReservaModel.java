@@ -2,7 +2,6 @@ package com.jvmausa.bookstore.api.model;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -16,13 +15,15 @@ public class ReservaModel extends RepresentationModel<ReservaModel> {
 	private Long id;
 
 	private OffsetDateTime dataReserva;
+	private OffsetDateTime dataDevolucaoPrev;
 	private OffsetDateTime dataDevolucao;
-	private BigDecimal valorTotal;
+	
+	private BigDecimal valorFinal;
 
 	private String status;
 
-	private ClienteModel cliente;
-	
-	private List<ItemReservaModel> livros;
+	private LivroModel livro;
+
+	private Boolean atraso;
 
 }

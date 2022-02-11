@@ -1,5 +1,5 @@
-package com.jvmausa.bookstore.api.controller;
 
+package com.jvmausa.bookstore.api.controller;
 
 import javax.validation.Valid;
 
@@ -19,8 +19,12 @@ import com.jvmausa.bookstore.api.assembler.LivroModelAssembler;
 import com.jvmausa.bookstore.api.model.LivroModel;
 import com.jvmausa.bookstore.api.model.input.LivroInput;
 import com.jvmausa.bookstore.domain.exception.DadosInvalidosException;
+import com.jvmausa.bookstore.domain.model.Cliente;
 import com.jvmausa.bookstore.domain.model.Livro;
+import com.jvmausa.bookstore.domain.model.Reserva;
 import com.jvmausa.bookstore.domain.repository.LivroRepository;
+import com.jvmausa.bookstore.domain.service.CadastrarReservaService;
+import com.jvmausa.bookstore.domain.service.CadastroClienteService;
 import com.jvmausa.bookstore.domain.service.CadastroLivroService;
 
 @RestController
@@ -32,6 +36,12 @@ public class LivroController {
 
 	@Autowired
 	private CadastroLivroService cadastroLivro;
+
+	@Autowired
+	private CadastrarReservaService cadastrarReservaService;
+
+	@Autowired
+	private CadastroClienteService cadastroCliente;
 
 	@Autowired
 	private LivroModelAssembler livroModelAssembler;
@@ -61,7 +71,7 @@ public class LivroController {
 	LivroModel adicionar(@RequestBody @Valid LivroInput livroInput) {
 
 		Livro livro = livroInputDisassembler.toDomainObject(livroInput);
-		
+
 		livro = cadastroLivro.salvar(livro);
 
 		try {
@@ -71,6 +81,23 @@ public class LivroController {
 		} catch (RuntimeException e) {
 			throw new DadosInvalidosException(e.getMessage());
 		}
+	}
+
+	@PostMapping("/{livroId}/reserve")
+	@ResponseStatus(HttpStatus.CREATED)
+	void reservarLivro(@Valid @PathVariable Long livroId) {
+
+		try {
+			Livro livro = cadastroLivro.buscarOuFalhar(livroId);
+
+			Cliente cliente = cadastroCliente.buscarOuFalhar(1L);
+
+			cadastrarReservaService.emitirNovaReserva(new Reserva(), livro, cliente);
+
+		} catch (RuntimeException e) {
+			throw new DadosInvalidosException(e.getMessage());
+		}
+
 	}
 
 }
