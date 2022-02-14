@@ -21,7 +21,6 @@ import com.jvmausa.bookstore.api.model.input.LivroInput;
 import com.jvmausa.bookstore.domain.exception.DadosInvalidosException;
 import com.jvmausa.bookstore.domain.model.Cliente;
 import com.jvmausa.bookstore.domain.model.Livro;
-import com.jvmausa.bookstore.domain.model.Reserva;
 import com.jvmausa.bookstore.domain.repository.LivroRepository;
 import com.jvmausa.bookstore.domain.service.CadastrarReservaService;
 import com.jvmausa.bookstore.domain.service.CadastroClienteService;
@@ -92,7 +91,7 @@ public class LivroController {
 
 			Cliente cliente = cadastroCliente.buscarOuFalhar(1L);
 
-			cadastrarReservaService.emitirNovaReserva(new Reserva(), livro, cliente);
+			cadastrarReservaService.emitirNovaReserva(livro, cliente);
 
 		} catch (RuntimeException e) {
 			throw new DadosInvalidosException(e.getMessage());

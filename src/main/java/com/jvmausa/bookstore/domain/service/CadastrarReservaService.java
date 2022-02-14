@@ -25,8 +25,10 @@ public class CadastrarReservaService {
 	private ClienteRepository clienteRepository;
 
 	@Transactional
-	public void emitirNovaReserva(Reserva novaReserva, Livro livroReserva, Cliente clienteReserva) {
+	public void emitirNovaReserva(Livro livroReserva, Cliente clienteReserva) {
 
+		Reserva novaReserva = new Reserva();
+		
 		novaReserva.setDataReserva(OffsetDateTime.parse("2022-02-01T09:37:01-03:00"));
 		novaReserva.setDataDevolucaoPrev(addDays(novaReserva));
 		novaReserva.setStatusReserva(StatusReserva.PENDENTE);
@@ -34,7 +36,7 @@ public class CadastrarReservaService {
 
 		novaReserva.getLivro().setStatus(StatusLivro.EMPRESTADO);
 
-		novaReserva.setDataDevolucao(OffsetDateTime.now());
+		novaReserva.setDataDevolucao(OffsetDateTime.parse("2022-02-10T09:37:01-03:00"));
 		Boolean atraso = novaReserva.verificaAtraso();
 
 		if (atraso) {
@@ -60,8 +62,8 @@ public class CadastrarReservaService {
 		BigDecimal valorComJuros = BigDecimal.ZERO;
 
 		// tá pegando a diferença de dias
-		int devolucao = reserva.getDataDevolucao().getDayOfMonth();
-		int previsao = reserva.getDataDevolucaoPrev().getDayOfMonth();
+		int devolucao = reserva.getDataDevolucao().getDayOfYear();
+		int previsao = reserva.getDataDevolucaoPrev().getDayOfYear();
 		int diferenca = devolucao - previsao;
 
 		BigDecimal preco = reserva.getLivro().getPreco();
